@@ -1,6 +1,9 @@
 class Article < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_by_title, against: :title
+  pg_search_scope :search_by_title, against: :title, using: {
+    :trigram => { threshold: 0.1 },    
+    :tsearch => { :prefix => true }
+}
 
   validates :title, presence: true, uniqueness: true
   validates :content, presence: true, length: {
