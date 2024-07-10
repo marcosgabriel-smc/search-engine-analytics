@@ -2,26 +2,27 @@
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
-  <% content_for :title, "Articles" %>
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl mb-4">Articles</h1>
-    <%= link_to "New article", new_article_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
-  <div id="search-bar">
-    <%= form_with(url: articles_path, method: :get, data: {turbo_frame: "articles"}) do |form| %>
-      <%= form.label :query, "Search for articles", class: "block mb-2" %>
-      <div class="flex space-x-3">
-        <%= form.text_field :query, class: "py-3 px-3 rounded-border" %>
-        <%= form.submit "Search", class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"  %>
+  <%= turbo_frame_tag "search-frame" do %>
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-4xl mb-4">Articles</h1>
+      <%= link_to "New article", new_article_path, data: { turbo_frame: "main-frame" }, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    </div>
+    <div id="search-bar" class="mb-5">
+      <%= form_with(url: articles_path, method: :get, data: {
+      controller: "search-form", turbo_frame: "main-frame", turbo_action: "advance"}) do |form| %>
+        <%= form.label :query, "Search for articles", class: "block mb-2" %>
+        <div class="flex space-x-3">
+          <%= form.text_field :query, class: "py-3 px-3 rounded-border text-black", data: {action: "input->search-form#search"} %>
+          <%= form.submit "Search", class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"  %>
+        </div>
       <% end %>
     </div>
-  </div>
-  <div id="articles" class="min-w-full">
-    <% @articles.each do |article| %>
-      <%= render article %>
-      <p>
-        <%= link_to "Show this article", article, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
+  <% end %>
+  <%= turbo_frame_tag "main-frame" do %>
+    <% if @articles.present? %>
+      <%= render @articles %>
+    <% else %>
+      <p class="text-slate-200">No articles found</p>
     <% end %>
-  </div>
+  <% end %>
 </div>
