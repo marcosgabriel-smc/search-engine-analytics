@@ -19,7 +19,7 @@ Article.destroy_all
 30.times do
   Article.create!(
     {
-      title: Faker::Book.title,
+      title: Faker::Book.unique.title,
       content: Faker::Lorem.paragraph(sentence_count: 30, supplemental: true, random_sentences_to_add: 50),
     }
   )
