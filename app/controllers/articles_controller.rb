@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
     if params[:query].present?
       @articles = Article.search_by_title(params[:query])
     else
-      @articles = Article.all
+      @articles = Article.ordered
     end
   end
 
@@ -31,6 +31,7 @@ class ArticlesController < ApplicationController
       if @article.save
         format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
+        format.turbo_stream
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @article.errors, status: :unprocessable_entity }

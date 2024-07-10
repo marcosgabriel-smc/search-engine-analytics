@@ -2,22 +2,25 @@
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
-  <%= turbo_frame_tag "search-frame" do %>
-    <div class="flex justify-between items-center">
-      <h1 class="font-bold text-4xl mb-4">Articles</h1>
-      <%= link_to "New article", new_article_path, data: { turbo_frame: "main-frame" }, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-    </div>
-    <div id="search-bar" class="mb-5">
-      <%= form_with(url: articles_path, method: :get, data: {
+  <div class="flex items-center">
+    <h1 class="font-bold text-4xl mb-4">Access our articles</h1>
+    <h3 class="font-italic">Get to know us better!</h3>
+  </div>
+  <%= link_to "New article", 
+              new_article_path, 
+              data: { turbo_frame: dom_id(Article.new) }, 
+              class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  <div id="flex" class="mb-5 w-100">
+    <%= form_with(url: articles_path, method: :get, data: {
       controller: "search-form", turbo_frame: "main-frame", turbo_action: "advance"}) do |form| %>
-        <%= form.label :query, "Search for articles", class: "block mb-2" %>
-        <div class="flex space-x-3">
-          <%= form.text_field :query, class: "py-3 px-3 rounded-border text-black", data: {action: "input->search-form#search"} %>
-          <%= form.submit "Search", class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"  %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+      <%= form.label :query, "Search for articles", class: "block mb-2" %>
+      <div class="flex space-x-3">
+        <%= form.text_field :query, class: "py-3 px-3 rounded-border text-black", data: {action: "input->search-form#search"} %>
+        <%= form.submit "Search", class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"  %>
+      </div>
+    <% end %>
+  </div>
+  <%= turbo_frame_tag Article.new %>
   <%= turbo_frame_tag "main-frame" do %>
     <% if @articles.present? %>
       <%= render @articles %>

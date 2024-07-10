@@ -1,0 +1,4 @@
+<%= turbo_stream.prepend "main-frame" do %>
+  <%= render partial: "articles/article", locals: { article: @article } %>
+<% end %>
+<%= turbo_stream.update Article.new, "" %>

@@ -1,6 +1,6 @@
 class Article < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_by_title, against: :title, using: {        
+  pg_search_scope :search_by_title, against: :title, using: {
     :tsearch => { :prefix => true }
 }
 
@@ -11,4 +11,6 @@ class Article < ApplicationRecord
     maximum: 3000,
     too_long: 'Your content must not exceed 3000 characters.'
   }
+
+  scope :ordered, -> { order(id: :desc) }
 end
