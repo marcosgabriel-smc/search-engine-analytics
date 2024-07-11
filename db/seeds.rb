@@ -18,6 +18,7 @@ Log.destroy_all
 # Articles
 
 puts 'Creating some dummy articles...'
+
 30.times do
   Article.create!(
     {
@@ -28,13 +29,29 @@ puts 'Creating some dummy articles...'
 end
 
 # Logs
+
 puts 'Creating some dummy logs...'
+
 countries = ["Brazil", "United States", "India", "Pakistan", "Argentina", "Mexico", "Canada", "Germany", "France", "Spain", "Japan", "China", "Australia", "Angola", "Madagascar", "Morroco"]
 3000.times do
   Log.create!(
     {
       input: Faker::Book.title,
       ip: Faker::Internet.ip_v4_address,
+      country: countries.sample,
+      created_at: Time.now - rand(0..30).days
+    }
+  )
+end
+
+puts "Creating our dummy top users..."
+
+ipAddresses = ["192.168.0.1", "10.0.0.1", "172.16.0.1", "192.0.2.1", "198.51.100.1"]
+100.times do
+  Log.create!(
+    {
+      input: Faker::Book.title,
+      ip: ipAddresses.sample,
       country: countries.sample,
       created_at: Time.now - rand(0..30).days
     }
