@@ -79,3 +79,5 @@ gem 'faker'
 gem 'pg_search'
 gem 'dotenv-rails'
 gem 'httparty'
+gem "chartkick"
+gem "groupdate"

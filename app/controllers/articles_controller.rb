@@ -8,6 +8,7 @@ class ArticlesController < ApplicationController
     else
       @articles = Article.ordered
     end
+    @logs = Log.top_five_inputs
   end
 
   # GET /articles/1 or /articles/1.json

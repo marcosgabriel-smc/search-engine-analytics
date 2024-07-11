@@ -24,7 +24,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_011741) do
   create_table "logs", force: :cascade do |t|
     t.string "input"
     t.string "ip"
-    t.string "city"
     t.string "country"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

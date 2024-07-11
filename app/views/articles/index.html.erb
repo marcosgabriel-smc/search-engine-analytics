@@ -2,6 +2,34 @@
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
+  <div class="flex" data-controller="charts">
+    <h2>Discover our stats!</h2>
+    <button id="map-chart" 
+            data-action="click->charts#toggleCharts"
+      class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+      Map Chart
+    </button>
+    <button id="multiline-chart", 
+            data-action="click->charts#toggleCharts"
+      class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+      Trending This Month
+    </button>
+  </div>
+  <div data-controller="charts">
+    <div id="map-chart-content">
+      <%= geo_chart Log.group(:country).count %>
+    </div>
+    <div id="multiline-chart-content" style="display: none;">
+      <%= line_chart @logs.map { |log| {
+          name: log.input,
+          data: Log.where(input: log.input)
+                  .where(created_at: 1.month.ago.midnight..Time.now)
+                  .group_by_week(:created_at)
+                  .count
+        }}
+    %>
+    </div>
+  </div>
   <div class="m-5 text-center">
     <h1 class="font-bold text-4xl">Access our articles</h1>
     <h3 class="italic">Get to know us better!</h3>

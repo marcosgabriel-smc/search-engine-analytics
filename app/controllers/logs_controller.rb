@@ -10,11 +10,8 @@ class LogsController < ApplicationController
     api_key = ENV['GEO_LOCATION_API']
     response = HTTParty.get("https://api.ipgeolocation.io/ipgeo?apiKey=#{api_key}&ip=#{@log.ip}")
     location_data = response.parsed_response
-    city = location_data['city']
     country = location_data['country_name']
-    @log.city = city
     @log.country = country
-    Rails.logger.info "LOG 1: #{@log.inspect}"
 
     if @log.save
       render json: @log, status: :created

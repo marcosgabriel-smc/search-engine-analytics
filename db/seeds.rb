@@ -29,13 +29,14 @@ end
 
 # Logs
 puts 'Creating some dummy logs...'
-500.times do
+countries = ["Brazil", "United States", "India", "Pakistan", "Argentina", "Mexico", "Canada", "Germany", "France", "Spain", "Japan", "China", "Australia", "Angola", "Madagascar", "Morroco"]
+3000.times do
   Log.create!(
     {
       input: Faker::Book.title,
       ip: Faker::Internet.ip_v4_address,
-      city: Faker::Locations::Australia.location,
-      country: "Australia"
+      country: countries.sample,
+      created_at: Time.now - rand(0..30).days
     }
   )
 end
