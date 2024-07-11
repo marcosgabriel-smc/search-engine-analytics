@@ -1,0 +1,44 @@
+<div class="flex" data-controller="charts">
+  <h2>Discover our stats!</h2>
+  <button id="map" 
+            data-action="click->charts#toggleCharts"
+    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+    Map Chart
+  </button>
+  <button id="multiline", 
+            data-action="click->charts#toggleCharts"
+    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+    Trending This Month
+  </button>
+  <button id="top-users", 
+            data-action="click->charts#toggleCharts"
+    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+    Top Researchers
+  </button>
+</div>
+<div data-controller="charts">
+  <div id="map-chart">
+    <%= geo_chart Log.group(:country).count %>
+  </div>
+  <div id="multiline-chart" style="display: none;">
+    <%= line_chart @logs.map { |log| {
+          name: log.input,
+          data: Log.where(input: log.input)
+                  .where(created_at: 1.month.ago.midnight..Time.now)
+                  .group_by_week(:created_at)
+                  .count
+        }}
+    %>
+  </div>
+  <div id="top-users-chart" style="display: none;">
+    <%= column_chart Log.group(:ip)
+                      .order('count_id DESC')
+                      .limit(5)
+                      .count(:id), 
+                  library: {
+                    title: { text: 'Top 5 Users by Logs' },
+                    yAxis: { title: { text: 'Number of Logs' } },
+                    xAxis: { title: { text: 'User IP' } }
+                  } %>
+  </div>
+</div>
