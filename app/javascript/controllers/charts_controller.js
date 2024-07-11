@@ -4,18 +4,30 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   toggleCharts(event) {
     const buttonId = event.target.id;
-    const mapChartContent = document.querySelector("#map-chart-content");
-    const multilineChartContent = document.querySelector(
-      "#multiline-chart-content"
-    );
-    console.log(buttonId, mapChartContent, multilineChartContent);
+    const mapChart = document.querySelector("#map-chart");
+    const multilineChart = document.querySelector("#multiline-chart");
+    const topUsersChart = document.querySelector("#top-users-chart");
 
-    if (buttonId === "map-chart") {
-      mapChartContent.style.display = "block";
-      multilineChartContent.style.display = "none";
-    } else if (buttonId === "multiline-chart") {
-      mapChartContent.style.display = "none";
-      multilineChartContent.style.display = "block";
+    console.log(buttonId, mapChart, multilineChart, topUsersChart);
+
+    switch (buttonId) {
+      case "map":
+        mapChart.style.display = "block";
+        multilineChart.style.display = "none";
+        topUsersChart.style.display = "none";
+        break;
+      case "multiline":
+        mapChart.style.display = "none";
+        multilineChart.style.display = "block";
+        topUsersChart.style.display = "none";
+        break;
+      case "top-users":
+        mapChart.style.display = "none";
+        multilineChart.style.display = "none";
+        topUsersChart.style.display = "block";
+        break;
+      default:
+        console.log("Unknown button ID");
     }
   }
 }
