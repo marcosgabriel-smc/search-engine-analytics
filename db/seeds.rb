@@ -12,10 +12,12 @@
 ######################################################################
 puts 'Cleaning the database...'
 Article.destroy_all
+Log.destroy_all
 
 
 # Articles
 
+puts 'Creating some dummy articles...'
 30.times do
   Article.create!(
     {
@@ -25,4 +27,17 @@ Article.destroy_all
   )
 end
 
-puts 'Creating some dummy articles'
+# Logs
+puts 'Creating some dummy logs...'
+500.times do
+  Log.create!(
+    {
+      input: Faker::Book.title,
+      ip: Faker::Internet.ip_v4_address,
+      city: Faker::Locations::Australia.location,
+      country: "Australia"
+    }
+  )
+end
+
+puts 'All set to go!'
