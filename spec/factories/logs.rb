@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :log do
-    input { "MyString" }
-    ip { "MyString" }
-    city { "MyString" }
-    country { "MyString" }
+    input { "What is love? Baby dont hurt me" }
+    ip { "192.168.1.1" }
+    city { "Rio de Janeiro" }
+    country { "Brazil" }
   end
 end
