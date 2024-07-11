@@ -3,11 +3,13 @@ class Log < ApplicationRecord
   validates :input, presence: true, length: {minimum: 3}
   validates :ip, presence: true, format: { with: ip_regex, message: "must be a valid IPv4 address" }
   validates :country, presence: true
+  validates :is_processed, inclusion: { in: [true, false] }
 
   def self.top_five_inputs
-    Log.group(:input)
-       .select('input, COUNT(*) as count')
-       .order('count DESC')
-       .limit(5)
+    where(is_processed: true)
+      .group(:input)
+      .select('input, COUNT(*) as count')
+      .order('count DESC')
+      .limit(5)
   end
 end

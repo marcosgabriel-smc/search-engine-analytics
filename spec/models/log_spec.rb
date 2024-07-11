@@ -36,5 +36,51 @@ RSpec.describe Log, type: :model do
       expect(log).not_to be_valid
       expect(log.errors[:country]).to include("can't be blank")
     end
+
+    it 'is invalid without is_processed' do
+      log = build(:log, is_processed: nil)
+      expect(log).not_to be_valid
+      expect(log.errors[:is_processed]).to include("is not included in the list")
+    end
+  end
+
+  describe '.top_five_inputs' do
+    context 'when there are processed logs' do
+      before do
+        create_list(:log, 3, input: 'Test Input 1', is_processed: true)
+        create_list(:log, 2, input: 'Test Input 2', is_processed: true)
+        create_list(:log, 1, input: 'Test Input 3', is_processed: true)
+      end
+
+      it 'returns the top inputs by count' do
+        result = Log.top_five_inputs
+        expect(result.map(&:input)).to eq(['Test Input 1', 'Test Input 2', 'Test Input 3'])
+      end
+    end
+
+    context 'when there are unprocessed logs' do
+      before do
+        create_list(:log, 5, input: 'Test Input 4', is_processed: false)
+      end
+
+      it 'does not include unprocessed logs' do
+        result = Log.top_five_inputs
+        expect(result).to be_empty
+      end
+    end
+
+    context 'when there are both processed and unprocessed logs' do
+      before do
+        create_list(:log, 3, input: 'Test Input 1', is_processed: true)
+        create_list(:log, 2, input: 'Test Input 2', is_processed: true)
+        create_list(:log, 1, input: 'Test Input 3', is_processed: true)
+        create_list(:log, 5, input: 'Test Input 4', is_processed: false)
+      end
+
+      it 'only includes processed logs in the result' do
+        result = Log.top_five_inputs
+        expect(result.map(&:input)).to eq(['Test Input 1', 'Test Input 2', 'Test Input 3'])
+      end
+    end
   end
 end

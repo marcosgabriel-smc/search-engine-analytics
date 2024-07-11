@@ -3,15 +3,15 @@ import { Controller } from "@hotwired/stimulus";
 // Connects to data-controller="search-form"
 export default class extends Controller {
   handleUserInput() {
-    this.search();
-    this.log();
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.search();
+      this.log();
+    }, 300);
   }
 
   search() {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.element.requestSubmit();
-    }, 200);
+    this.element.requestSubmit();
   }
 
   async fetchIpAddress() {

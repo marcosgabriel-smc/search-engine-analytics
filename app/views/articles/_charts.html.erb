@@ -34,11 +34,9 @@
     <%= column_chart Log.group(:ip)
                       .order('count_id DESC')
                       .limit(5)
-                      .count(:id), 
-                  library: {
-                    title: { text: 'Top 5 Users by Logs' },
-                    yAxis: { title: { text: 'Number of Logs' } },
-                    xAxis: { title: { text: 'User IP' } }
-                  } %>
+                      .count(:id),
+                    ytitle: 'Number of Searches',
+                    xtitle: 'User IP'
+                  %>
   </div>
 </div>

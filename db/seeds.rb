@@ -39,7 +39,8 @@ countries = ["Brazil", "United States", "India", "Pakistan", "Argentina", "Mexic
       input: Faker::Book.title,
       ip: Faker::Internet.ip_v4_address,
       country: countries.sample,
-      created_at: Time.now - rand(0..30).days
+      created_at: Time.now - rand(0..30).days,
+      is_processed: true
     }
   )
 end
@@ -53,7 +54,8 @@ ipAddresses = ["192.168.0.1", "10.0.0.1", "172.16.0.1", "192.0.2.1", "198.51.100
       input: Faker::Book.title,
       ip: ipAddresses.sample,
       country: countries.sample,
-      created_at: Time.now - rand(0..30).days
+      created_at: Time.now - rand(0..30).days,
+      is_processed: true
     }
   )
 end
