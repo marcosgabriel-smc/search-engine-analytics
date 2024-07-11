@@ -104,6 +104,10 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     diff-lcs (1.5.1)
+    dotenv (3.1.2)
+    dotenv-rails (3.1.2)
+      dotenv (= 3.1.2)
+      railties (>= 6.1)
     drb (2.2.1)
     error_highlight (0.6.0)
     erubi (1.13.0)
@@ -303,6 +307,7 @@ DEPENDENCIES
   capybara
   database_cleaner-active_record
   debug
+  dotenv-rails
   error_highlight (>= 0.4.0)
   factory_bot_rails
   faker

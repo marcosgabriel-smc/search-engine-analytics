@@ -17,7 +17,7 @@
               ) do |form| %>
         <%= form.label :query, "Search for articles", class: "block mb-2" %>
         <div class="flex space-x-3">
-          <%= form.text_field :query, class: "py-3 px-3 rounded-lg text-black w-3/4", data: {action: "input->search-form#search"} %>
+          <%= form.text_field :query, class: "py-3 px-3 rounded-lg text-black w-3/4", data: {action: "input->search-form#handleUserInput"} %>
           <%= form.submit "Search", class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"  %>
         </div>
       <% end %>
