@@ -14,15 +14,6 @@ export default class extends Controller {
     }, 200);
   }
 
-  async log() {
-    const inputValue = this.element.querySelector("input").value;
-    const ipAddress = await this.fetchIpAddress();
-    const logData = {
-      input: inputValue,
-      ipAddress: ipAddress,
-    };
-  }
-
   async fetchIpAddress() {
     try {
       const response = await fetch("https://api.ipify.org?format=json");
@@ -31,6 +22,36 @@ export default class extends Controller {
     } catch (error) {
       console.error("Error fetching IP address:", error);
       return "Unknown IP";
+    }
+  }
+
+  async log() {
+    const inputValue = this.element.querySelector("input").value;
+    const ipAddress = await this.fetchIpAddress();
+    const logData = {
+      input: inputValue,
+      ip: ipAddress,
+    };
+    await this.registerLog(logData);
+  }
+
+  async registerLog(logData) {
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      .getAttribute("content");
+    try {
+      const response = await fetch("/logs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+        },
+        body: JSON.stringify(logData),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error registering log:", error);
     }
   }
 }
