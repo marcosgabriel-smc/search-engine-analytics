@@ -1,6 +1,6 @@
 <%= turbo_frame_tag article do %>
   <div class="text-slate-200 border-solid border-b py-5">
-    <p><%= link_to article.title, article_path(article), data: { turbo_frame: "_top" } %></p>
+    <h3><%= link_to article.title, article_path(article), class: "text-cyan-600 text-xl font-bold hover:underline hover:decoration-pink-500", data: { turbo_frame: "_top" } %></h3>
     <p class="my-5">
       <%= article.content %>
     </p>
