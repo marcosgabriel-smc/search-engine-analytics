@@ -12,6 +12,26 @@ class Log < ApplicationRecord
       .limit(5)
   end
 
+  def self.latest_logs(limit = 5)
+    processed
+      .order(created_at: :desc)
+      .limit(limit)
+  end
+
+  def self.top_users(limit = 5)
+    processed
+      .group(:ip)
+      .order('count_id DESC')
+      .limit(limit)
+      .count(:id)
+  end
+
+  def self.logs_by_country
+    processed
+      .group(:country)
+      .count
+  end
+
   def self.perform_log_processing
     users_unprocessed_logs = where(is_processed: false).order(:created_at).group_by(&:ip)
 
