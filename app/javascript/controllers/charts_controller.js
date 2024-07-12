@@ -11,18 +11,21 @@ export default class extends Controller {
 
     switch (buttonId) {
       case "map":
+        this.loadLatestChart("map");
         mapChart.style.display = "block";
         multilineChart.style.display = "none";
         topUsersChart.style.display = "none";
         latestChart.style.display = "none";
         break;
       case "multiline":
+        this.loadLatestChart("multiline");
         mapChart.style.display = "none";
         multilineChart.style.display = "block";
         topUsersChart.style.display = "none";
         latestChart.style.display = "none";
         break;
       case "top-users":
+        this.loadLatestChart("top-users");
         mapChart.style.display = "none";
         multilineChart.style.display = "none";
         topUsersChart.style.display = "block";
@@ -30,6 +33,7 @@ export default class extends Controller {
         break;
       case "latest":
         this.filterLogs();
+        this.loadLatestChart("latest");
         mapChart.style.display = "none";
         multilineChart.style.display = "none";
         topUsersChart.style.display = "none";
@@ -56,5 +60,9 @@ export default class extends Controller {
     } catch (error) {
       console.error("Error registering log:", error);
     }
+  }
+
+  loadLatestChart(chart) {
+    Turbo.visit(`/articles/latest?chart=${chart}`, { frame: "charts-frame" });
   }
 }

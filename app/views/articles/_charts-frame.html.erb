@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "charts-frame" do %>
+  <%= render 'charts', 
+             latest_logs: latest_logs, 
+             top_logs: top_logs, 
+             top_users: top_users, 
+             logs_by_country: logs_by_country, 
+             active_chart: active_chart %>
+<% end %>

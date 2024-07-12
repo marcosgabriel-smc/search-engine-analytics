@@ -6,7 +6,16 @@
     <h1 class="font-bold text-4xl">Access our articles</h1>
     <h3 class="italic">Get to know us better!</h3>
   </div>
-  <%= render 'charts' %>
+  <%= turbo_frame_tag "charts-frame" do %>
+    <%= render 'charts', 
+      latest_logs: @latest_logs, 
+      top_logs: @top_logs, 
+      latest_logs: @latest_logs, 
+      top_users: @top_users, 
+      logs_by_country:  @logs_by_country, 
+      active_chart: @active_chart  
+    %>
+  <% end %>
   <div class="flex">
     <div class="flex-grow flex flex-column justify-between mb-5 w-100">
       <%= form_with(url: articles_path,

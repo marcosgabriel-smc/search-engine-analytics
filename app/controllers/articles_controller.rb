@@ -10,6 +10,23 @@ class ArticlesController < ApplicationController
     end
     @top_logs = Log.top_five_inputs
     @latest_logs = Log.order(created_at: :desc).limit(5)
+    @top_users = Log.group(:ip).order('count_id DESC').limit(5).count(:id)
+    @logs_by_country = Log.group(:country).count
+    @active_chart = params[:chart] || 'map'
+  end
+
+  def latest
+    @top_logs = Log.top_five_inputs
+    @top_users = Log.group(:ip).order('count_id DESC').limit(5).count(:id)
+    @latest_logs = Log.order(created_at: :desc).limit(5)
+    @logs_by_country = Log.group(:country).count
+    @active_chart = params[:chart] || 'map'
+    render partial: 'charts-frame',
+           locals: { latest_logs: @latest_logs,
+                     top_logs: @top_logs,
+                     top_users: @top_users,
+                     logs_by_country: @logs_by_country,
+                     active_chart: @active_chart }
   end
 
   # GET /articles/1 or /articles/1.json
