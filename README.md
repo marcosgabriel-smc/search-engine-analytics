@@ -5,6 +5,8 @@ This project aims to create a search mechanism where users can browse through a 
 1. **Realtime Search:** As the user types, the UI automatically updates to show articles that match the input.
 2. **Search Logging:** Records user inputs to enable later analysis of search behavior.
 
+Access the live [demo here](https://search-engine-analytics.fly.dev/)
+
 ## Features
 
 ### Realtime Search
