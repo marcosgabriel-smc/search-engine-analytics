@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
       @articles = Article.ordered
     end
     @top_logs = Log.top_five_inputs
-    @latest_posts = Log.latest_logs
+    @latest_logs = Log.latest_logs
     @top_users = Log.top_users
     @logs_by_country = Log.logs_by_country
     @active_chart = params[:chart] || 'map'
@@ -17,7 +17,7 @@ class ArticlesController < ApplicationController
 
   def latest
     @top_logs = Log.top_five_inputs
-    @latest_posts = Log.latest_logs
+    @latest_logs = Log.latest_logs
     @top_users = Log.top_users
     @logs_by_country = Log.logs_by_country
     @active_chart = params[:chart] || 'map'
