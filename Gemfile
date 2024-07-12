@@ -81,3 +81,5 @@ gem 'dotenv-rails'
 gem 'httparty'
 gem "chartkick"
 gem "groupdate"
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
