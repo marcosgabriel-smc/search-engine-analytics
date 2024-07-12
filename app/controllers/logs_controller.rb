@@ -7,18 +7,31 @@ class LogsController < ApplicationController
       return
     end
 
-    api_key = ENV['GEO_LOCATION_API']
-    response = HTTParty.get("https://api.ipgeolocation.io/ipgeo?apiKey=#{api_key}&ip=#{@log.ip}")
-    location_data = response.parsed_response
-    country = location_data['country_name']
-    @log.country = country
-
     if @log.save
       render json: @log, status: :created
     else
       render json: @log.errors, status: :unprocessable_entity
     end
   end
+
+  def filter_logs
+    Log.perform_log_processing
+    api_key = ENV['GEO_LOCATION_API']
+
+    pending_country_logs = Log.where(is_processed: true, country: nil)
+
+    pending_country_logs.each do |log|
+      response = HTTParty.get("https://api.ipgeolocation.io/ipgeo?apiKey=#{api_key}&ip=#{log.ip}")
+      if response.success?
+        location_data = response.parsed_response
+        country = location_data['country_name']
+        log.update(country: country)
+      end
+    end
+
+    redirect_to articles_path
+  end
+
 
   private
   def log_params

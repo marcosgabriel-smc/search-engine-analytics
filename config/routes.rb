@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   root "articles#index"
 
   post '/logs', to: 'logs#create', as: :logs
+  post '/logs/filter_logs', to: 'logs#filter_logs', as: 'filter_logs'
 end

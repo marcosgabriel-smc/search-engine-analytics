@@ -31,12 +31,6 @@ RSpec.describe Log, type: :model do
       expect(log.errors[:ip]).to include("must be a valid IPv4 address")
     end
 
-    it 'is invalid without a country' do
-      log = build(:log, country: nil)
-      expect(log).not_to be_valid
-      expect(log.errors[:country]).to include("can't be blank")
-    end
-
     it 'is invalid without is_processed' do
       log = build(:log, is_processed: nil)
       expect(log).not_to be_valid
