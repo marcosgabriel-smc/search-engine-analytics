@@ -78,6 +78,72 @@ RSpec.describe Log, type: :model do
     end
   end
 
+  describe '.latest_logs' do
+    context 'when there are processed logs' do
+      before do
+        @log1 = create(:log, is_processed: true, created_at: 1.day.ago)
+        @log2 = create(:log, is_processed: true, created_at: 2.days.ago)
+        @log3 = create(:log, is_processed: true, created_at: 3.days.ago)
+      end
+
+      it 'returns the latest logs in descending order' do
+        result = Log.latest_logs
+        expect(result).to eq([@log1, @log2, @log3])
+      end
+    end
+
+    context 'when there are no processed logs' do
+      it 'returns an empty array' do
+        result = Log.latest_logs
+        expect(result).to be_empty
+      end
+    end
+  end
+
+  describe '.top_users' do
+    context 'when there are processed logs' do
+      before do
+        create_list(:log, 3, ip: '192.168.0.1', is_processed: true)
+        create_list(:log, 2, ip: '192.168.0.2', is_processed: true)
+        create_list(:log, 1, ip: '192.168.0.3', is_processed: true)
+      end
+
+      it 'returns the top users by log count' do
+        result = Log.top_users
+        expect(result.keys).to include('192.168.0.1', '192.168.0.2', '192.168.0.3')
+      end
+    end
+
+    context 'when there are no processed logs' do
+      it 'returns an empty hash' do
+        result = Log.top_users
+        expect(result).to be_empty
+      end
+    end
+  end
+
+  describe '.logs_by_country' do
+    context 'when there are processed logs' do
+      before do
+        create_list(:log, 3, country: 'USA', is_processed: true)
+        create_list(:log, 2, country: 'Canada', is_processed: true)
+        create_list(:log, 1, country: 'Mexico', is_processed: true)
+      end
+
+      it 'returns the log count grouped by country' do
+        result = Log.logs_by_country
+        expect(result).to eq({ 'USA' => 3, 'Canada' => 2, 'Mexico' => 1 })
+      end
+    end
+
+    context 'when there are no processed logs' do
+      it 'returns an empty hash' do
+        result = Log.logs_by_country
+        expect(result).to be_empty
+      end
+    end
+  end
+
   describe '.perform_log_processing' do
     before do
       base_time = Time.now - 3.hours
