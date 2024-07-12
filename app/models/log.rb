@@ -27,19 +27,23 @@ class Log < ApplicationRecord
     where(id: bad_logs_ids).delete_all
   end
 
+    # Mock Array
+    # logs = ["Banana", "App", "Apple", "Apple Juice", "Oran", "Orange"]
+    # Expected result: ["Banana", "Apple Juice", "Orange"]
+
   private_class_method def self.filter_logs(logs)
     final_inputs = []
-    current_input = ""
+    current_log = logs.first
 
     logs.each_with_index do |log, index|
-      if index == 0 || log.input.start_with?(current_input)
-        current_input = log.input
+      next_log = logs[index + 1]
+      if next_log && next_log.input.start_with?(current_log.input)
+        current_log = next_log
       else
-        final_inputs << log
-        current_input = log.input
+        final_inputs << current_log unless final_inputs.include?(current_log)
+        current_log = next_log
       end
     end
-    final_inputs << logs.last
     final_inputs
   end
 end
