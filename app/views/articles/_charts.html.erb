@@ -15,13 +15,18 @@
     class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
     Top Researchers
   </button>
+  <button id="latest", 
+            data-action="click->charts#toggleCharts"
+    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+    Latests Searches
+  </button>
 </div>
 <div data-controller="charts">
   <div id="map-chart">
     <%= geo_chart Log.group(:country).count %>
   </div>
   <div id="multiline-chart" style="display: none;">
-    <%= line_chart @logs.map { |log| {
+    <%= line_chart @top_logs.map { |log| {
           name: log.input,
           data: Log.where(input: log.input)
                   .where(created_at: 1.month.ago.midnight..Time.now)
@@ -38,5 +43,14 @@
                     ytitle: 'Number of Searches',
                     xtitle: 'User IP'
                   %>
+  </div>
+  <div id="latest-chart" style="display: none;">
+    <% @latest_logs.each do |log| %>
+      <div class="flex justify-between">
+        <h3><%= log.input %></h3>
+        <p>By: <%= log.ip %></p>
+        <p>At: <%= log.created_at.strftime("%d %b %Y") %></p>
+      </div>
+    <% end %>
   </div>
 </div>

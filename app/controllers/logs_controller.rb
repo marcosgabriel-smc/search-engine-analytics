@@ -29,9 +29,8 @@ class LogsController < ApplicationController
       end
     end
 
-    redirect_to articles_path
+    render json: { message: 'Logs processing has been started.' }, status: :accepted
   end
-
 
   private
   def log_params

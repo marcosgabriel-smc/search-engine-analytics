@@ -8,7 +8,8 @@ class ArticlesController < ApplicationController
     else
       @articles = Article.ordered
     end
-    @logs = Log.top_five_inputs
+    @top_logs = Log.top_five_inputs
+    @latest_logs = Log.order(created_at: :desc).limit(5)
   end
 
   # GET /articles/1 or /articles/1.json
