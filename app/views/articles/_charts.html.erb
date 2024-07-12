@@ -1,36 +1,39 @@
-<div class="flex" data-controller="charts">
-  <h2>Discover our stats!</h2>
-  <button id="map" 
+<div class="my-5">
+  <div class="m-5 flex flex-col justify-center items-center" >
+    <h2 class="mt-5 mb-3">Find below our research stats</h2>
+    <div class="flex" data-controller="charts">
+      <button id="map" 
             data-action="click->charts#toggleCharts"
-    data-turbo-frame="charts-frame"
-    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
-    Map Chart
-  </button>
-  <button id="multiline"
+        data-turbo-frame="charts-frame"
+        class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+        Map Chart
+      </button>
+      <button id="multiline"
             data-action="click->charts#toggleCharts"
-    data-turbo-frame="charts-frame"
-    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
-    Trending This Month
-  </button>
-  <button id="top-users" 
+        data-turbo-frame="charts-frame"
+        class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+        Trending This Month
+      </button>
+      <button id="top-users" 
             data-action="click->charts#toggleCharts"
-    data-turbo-frame="charts-frame"
-    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
-    Top Researchers
-  </button>
-  <button id="latest"
+        data-turbo-frame="charts-frame"
+        class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+        Top Researchers
+      </button>
+      <button id="latest"
           data-action="click->charts#toggleCharts"
-    data-turbo-frame="charts-frame"
-    class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
-    Latests Searches
-  </button>
-</div>
-<div data-controller="charts">
-  <div id="map-chart" class="<%= active_chart == 'map' ? "block" : "hidden" %>">
-    <%= geo_chart logs_by_country %>
+        data-turbo-frame="charts-frame"
+        class="ml-5 bg-blue-600 text-white rounded-lg py-3 px-5 font-medium">
+        Latests Searches
+      </button>
+    </div>
   </div>
-  <div id="multiline-chart" class="<%= active_chart == 'multiline' ? "block" : "hidden" %>">
-    <%= line_chart top_logs.map { |log| {
+  <div data-controller="charts">
+    <div id="map-chart" class="<%= active_chart == 'map' ? "block" : "hidden" %>">
+      <%= geo_chart logs_by_country, library: {backgroundColor: "transparent"} %>
+    </div>
+    <div id="multiline-chart" class="<%= active_chart == 'multiline' ? "block" : "hidden" %>">
+      <%= line_chart top_logs.map { |log| {
           name: log.input,
           data: Log.where(input: log.input)
                   .where(created_at: 1.month.ago.midnight..Time.now)
@@ -38,20 +41,32 @@
                   .count
         }}
     %>
-  </div>
-  <div id="top-users-chart" class="<%= active_chart == 'top-users' ? "block" : "hidden" %>">
-    <%= column_chart top_users,
+    </div>
+    <div id="top-users-chart" class="<%= active_chart == 'top-users' ? "block" : "hidden" %>">
+      <%= column_chart top_users,
                     ytitle: 'Number of Searches',
                     xtitle: 'User IP'
                   %>
-  </div>
-  <div id="latest-chart" class="<%= active_chart == 'latest' ? "block" : "hidden" %>">
-    <% latest_logs.each do |log| %>
-      <div class="flex justify-between">
-        <h3><%= log.input %></h3>
-        <p>By: <%= log.ip %></p>
-        <p>At: <%= log.created_at.strftime("%d %b %Y") %></p>
-      </div>
-    <% end %>
+    </div>
+    <div id="latest-chart" class="<%= active_chart == 'latest' ? "block" : "hidden" %>">
+      <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-blue-600">
+            <th class="border border-gray-300 px-4 py-2 text-left">Input</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">IP</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% latest_logs.each do |log| %>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2"><%= log.input %></td>
+              <td class="border border-gray-300 px-4 py-2"><%= log.ip %></td>
+              <td class="border border-gray-300 px-4 py-2"><%= log.created_at.strftime("%H:%M %d %b %Y") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

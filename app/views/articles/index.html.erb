@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full mt-3">
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
@@ -25,7 +25,7 @@
                 turbo_frame: "main-frame", 
                 turbo_action: "advance"}
               ) do |form| %>
-        <%= form.label :query, "Search for articles", class: "block mb-2" %>
+        <%= form.label :query, "Looking for something?", class: "block mb-2" %>
         <div class="flex space-x-3">
           <%= form.text_field :query, class: "py-3 px-3 rounded-lg text-black w-3/4", data: {action: "input->search-form#handleUserInput"} %>
           <%= form.submit "Search", class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"  %>
